@@ -1,0 +1,16 @@
+{
+    "name": "exercises",
+    "version": "1.0.0",
+    "description": "This is a test project to learn npm and node",
+    "main": "index.html",
+    "scripts": {
+        "start": "npm run lite",
+        "test": "echo \"Error: no test specified\" && exit 1",
+        "lite": "lite-server"
+    },
+    "author": "Eberth Felipe",
+    "license": "ISC",
+    "devDependencies": {
+        "lite-server": "^2.5.4"
+    }
+}
