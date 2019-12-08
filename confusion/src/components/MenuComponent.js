@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import Media from 'reactstrap'
+import { Media } from 'reactstrap';
 
 /**
  * New Component must have contructor, render method and needs to be exported 
@@ -61,10 +61,10 @@ class Menu extends Component {
                         <Media left middle>
                             <Media object src={dish.image} alt={dish.name} />
                         </Media>
-                    </Media>
-                    <Media body className="ml-5">
-                        <Media heading> {dish.name} </Media>
-                        <p> {dish.description} </p>
+                        <Media body className="ml-5">
+                            <Media heading> {dish.name} </Media>
+                            <p> {dish.description} </p>
+                        </Media>
                     </Media>
                 </div>
             );
