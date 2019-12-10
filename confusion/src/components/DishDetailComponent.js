@@ -15,8 +15,9 @@ class DishDetail extends Component {
         return (
             <div className="row">
                 {this.renderDish(this.props.selectedDish)}
+                {this.renderComments(this.props.selectedDish)}
             </div>
-
+            
         );
     }
 
@@ -38,6 +39,36 @@ class DishDetail extends Component {
                 <div></div>
             );
         }
+    }
+
+    renderComments(selectedDish){
+        if(selectedDish != null){
+            console.log(selectedDish.comments);
+            selectedDish.comments.map((commentAux) => {
+                if(commentAux == null){
+                    console.log("commentAux == null");
+                    return (
+                        <div></div>
+                    );
+                } else {
+                    console.log(commentAux.author);
+                    return (
+                        <div className="row">
+                            <h4>Comments</h4>
+                            <ul className="list-group">
+                                <li key={commentAux.key} className="list-group-item">{commentAux.comment}</li>
+                                <li key={commentAux.key} className="list-group-item">-- {commentAux.author}, {commentAux.author}</li>
+                            </ul>
+                        </div>
+                    );    
+                }
+            });
+        } else {
+            return (
+                <div></div>
+            );
+        }
+
     }
 
 }
