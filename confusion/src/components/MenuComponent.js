@@ -12,6 +12,11 @@ class Menu extends Component {
         this.state = {
             selectedDish: null
         };
+        console.log('Menu component CONSTRUCTOR is invoked');
+    }
+
+    componentDidMount(){
+        console.log('Menu component componentDidMount is invoked');
     }
 
     onDishSelect(dish){
@@ -22,7 +27,7 @@ class Menu extends Component {
         if(dish != null){
             return (
                 <Card>
-                    <CardImg width="100%" object src={dish.image} alt={dish.name} />
+                    <CardImg width="100%" src={dish.image} alt={dish.name} />
                     <CardBody>
                         <CardTitle> {dish.name} </CardTitle>
                         <CardText> {dish.description} </CardText>
@@ -42,7 +47,7 @@ class Menu extends Component {
             return (
                 <div key={dish.id} className="col-12 col-md-5 m-1">
                     <Card onClick={() => this.onDishSelect(dish) }>
-                        <CardImg width="100%" object src={dish.image} alt={dish.name} />
+                        <CardImg width="100%" src={dish.image} alt={dish.name} />
                         <CardImgOverlay>
                             <CardTitle> {dish.name} </CardTitle>
                             {/* <CardText> {dish.description} </CardText> */}
@@ -51,7 +56,7 @@ class Menu extends Component {
                 </div>
             );
         });
-
+        console.log('Menu component RENDER is invoked');
         return (
             <div className="container">
                 <div className="row">
