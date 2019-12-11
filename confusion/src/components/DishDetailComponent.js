@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Card, CardImg, CardImgOverlay, CardText, CardBody, CardTitle } from 'reactstrap';
+import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
 /**
  * New Component must have contructor, render method and needs to be exported 
@@ -13,11 +13,13 @@ class DishDetail extends Component {
 
     render(){
         return (
-            <div className="row">
-                {this.renderDish(this.props.selectedDish)}
-                {this.renderComments(this.props.selectedDish)}
+            <div>
+                <div className="row">
+                    {this.renderDish(this.props.selectedDish)}
+                    {this.renderComments(this.props.selectedDish)}
+                </div>
             </div>
-            
+
         );
     }
 
@@ -31,7 +33,7 @@ class DishDetail extends Component {
                             <CardTitle> {dish.name} </CardTitle>
                             <CardText> {dish.description} </CardText>
                         </CardBody>
-                    </Card>        
+                    </Card>
                 </div>
             );
         } else {
@@ -44,7 +46,7 @@ class DishDetail extends Component {
     renderComments(selectedDish){
         if(selectedDish != null){
             console.log(selectedDish.comments);
-            selectedDish.comments.map((commentAux) => {
+            let allComment = selectedDish.comments.map((commentAux) => {
                 if(commentAux == null){
                     console.log("commentAux == null");
                     return (
@@ -53,16 +55,21 @@ class DishDetail extends Component {
                 } else {
                     console.log(commentAux.author);
                     return (
-                        <div className="row">
-                            <h4>Comments</h4>
-                            <ul className="list-group">
-                                <li key={commentAux.key} className="list-group-item">{commentAux.comment}</li>
-                                <li key={commentAux.key} className="list-group-item">-- {commentAux.author}, {commentAux.author}</li>
+                        <div key={commentAux.id} >
+                            <ul className="list-unstyled">
+                                <li>{commentAux.comment}</li>
+                                <li>-- {commentAux.author}, {commentAux.date}</li>
                             </ul>
                         </div>
-                    );    
+                    );
                 }
             });
+            return (
+                <div className="col-12 col-md-5 m-1">
+                    <h4>Comments</h4>
+                    {allComment}
+                </div>
+            );
         } else {
             return (
                 <div></div>
