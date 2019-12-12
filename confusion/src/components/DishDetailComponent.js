@@ -1,27 +1,21 @@
-import React, { Component } from 'react';
+import React from 'react';
 import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
 
-/**
- * New Component must have contructor, render method and needs to be exported 
- */
-class DishDetail extends Component {
-
-    render(){
-        console.log('DishDetail component render is invoked');
+    const DishDetail = (props) => {
+        console.log('DishDetail comments: ' + props.dish);
         return (
             <div>
                 <div className='container'>
                     <div className="row">
-                        {this.renderDish(this.props.dish)}
-                        {this.renderComments(this.props.dish)}
+                        <RenderDish dish={ props.dish } />
+                        <RenderComments dish={ props.dish } />
                     </div>
                 </div>
             </div>
-
         );
     }
-
-    renderDish(dish){
+    
+    function RenderDish({ dish }){
         if(dish != null){
             return (
                 <div className="col-12 col-md-5 m-1">
@@ -41,10 +35,10 @@ class DishDetail extends Component {
         }
     }
 
-    renderComments(selectedDish){
-        if(selectedDish != null){
-            console.log(selectedDish.comments);
-            let allComment = selectedDish.comments.map((commentAux) => {
+    function RenderComments({ dish }){
+        if(dish != null){
+            console.log(dish.comments);
+            let allComment = dish.comments.map((commentAux) => {
                 if(commentAux == null){
                     console.log("commentAux == null");
                     return (
@@ -75,16 +69,6 @@ class DishDetail extends Component {
         }
 
     }
-
-    componentDidMount(){
-        console.log('DishDetail component componentDidMount is invoked');
-    }
-
-    componentDidUpdate(){
-        console.log('DishDetail component componentDidUpdate is invoked');
-    }
-
-}
 
 // Need to export the component to use it in other files
 export default DishDetail;
