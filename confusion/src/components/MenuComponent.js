@@ -8,6 +8,7 @@ class Menu extends Component {
 
     constructor (props){
         super(props);
+        console.log('Menu component Constructor is invoked');
     }
 
     componentDidMount(){

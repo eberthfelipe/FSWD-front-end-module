@@ -6,12 +6,8 @@ import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
  */
 class DishDetail extends Component {
 
-    constructor (props){
-        super(props);
-
-    }
-
     render(){
+        console.log('DishDetail component render is invoked');
         return (
             <div>
                 <div className='container'>
@@ -78,6 +74,14 @@ class DishDetail extends Component {
             );
         }
 
+    }
+
+    componentDidMount(){
+        console.log('DishDetail component componentDidMount is invoked');
+    }
+
+    componentDidUpdate(){
+        console.log('DishDetail component componentDidUpdate is invoked');
     }
 
 }
