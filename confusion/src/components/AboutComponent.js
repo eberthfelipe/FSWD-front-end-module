@@ -79,7 +79,7 @@ function RenderLeader (leader){
         return (
             <div></div>
         );
-    } else if(leader.id == 0){
+    } else if(leader.id === 0){
         return (
             <div key={leader.id} className="col-12 mt-auto">
                 <Media tag="li">
