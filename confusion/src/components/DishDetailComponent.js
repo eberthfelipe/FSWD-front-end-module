@@ -1,29 +1,34 @@
-import React, { Component } from 'react';
-import { Card, CardImg, CardText, CardBody, CardTitle } from 'reactstrap';
+import React from 'react';
+import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbItem } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
-/**
- * New Component must have contructor, render method and needs to be exported 
- */
-class DishDetail extends Component {
-
-    constructor (props){
-        super(props);
-
-    }
-
-    render(){
+    const DishDetail = (props) => {
+        console.log('DishDetail comments: ' + props.comments);
         return (
             <div>
-                <div className="row">
-                    {this.renderDish(this.props.selectedDish)}
-                    {this.renderComments(this.props.selectedDish)}
+                <div className='container'>
+                    <div className="row">
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to='/menu'>Menu</Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                        </Breadcrumb>
+                        <div className="col-12">
+                            <h3>{props.dish.name}</h3>
+                            <hr />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <RenderDish dish={ props.dish } />
+                        <RenderComments comments={ props.comments } />
+                    </div>
                 </div>
             </div>
-
         );
     }
-
-    renderDish(dish){
+    
+    function RenderDish({ dish }){
         if(dish != null){
             return (
                 <div className="col-12 col-md-5 m-1">
@@ -43,10 +48,10 @@ class DishDetail extends Component {
         }
     }
 
-    renderComments(selectedDish){
-        if(selectedDish != null){
-            console.log(selectedDish.comments);
-            let allComment = selectedDish.comments.map((commentAux) => {
+    function RenderComments({ comments }){
+        if(comments != null){
+            console.log(comments);
+            let allComment = comments.map((commentAux) => {
                 if(commentAux == null){
                     console.log("commentAux == null");
                     return (
@@ -58,7 +63,7 @@ class DishDetail extends Component {
                         <div key={commentAux.id} >
                             <ul className="list-unstyled">
                                 <li>{commentAux.comment}</li>
-                                <li>-- {commentAux.author}, {commentAux.date}</li>
+                                <li>-- {commentAux.author}, {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(commentAux.date)))}</li>
                             </ul>
                         </div>
                     );
@@ -77,8 +82,6 @@ class DishDetail extends Component {
         }
 
     }
-
-}
 
 // Need to export the component to use it in other files
 export default DishDetail;
