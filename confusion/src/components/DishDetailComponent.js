@@ -23,7 +23,10 @@ const DishDetail = (props) => {
                 </div>
                 <div className="row">
                     <RenderDish dish={ props.dish } />
-                    <RenderComments comments={ props.comments } />
+                    <RenderComments comments={props.comments}
+                        addComment={props.addComment}
+                        dishId={props.dish.id}
+                    />
                 </div>
             </div>
         </div>
@@ -50,7 +53,7 @@ function RenderDish({ dish }){
     }
 }
 
-function RenderComments({ comments }){
+function RenderComments({ comments, dishId, addComment }){
     if(comments != null){
         console.log(comments);
         let allComment = comments.map((commentAux) => {
@@ -75,7 +78,7 @@ function RenderComments({ comments }){
             <div className="col-12 col-md-5 m-1">
                 <h4>Comments</h4>
                 {allComment}
-                <CommentForm />
+                <CommentForm dishId={dishId} addComment={addComment} />
             </div>
         );
     } else {
@@ -127,8 +130,8 @@ class CommentForm extends Component {
                                 </Control.select>
                             </div>
                             <div className="form-group">
-                                <Label htmlFor="yourname">Your Name</Label>
-                                <Control.text model=".yourname" id="yourname" name="yourname"
+                                <Label htmlFor="author">Your Name</Label>
+                                <Control.text model=".author" id="author" name="author"
                                     placeholder="Your Name"
                                     className="form-control"
                                     validators={{
@@ -138,7 +141,7 @@ class CommentForm extends Component {
                                 />
                                 <Errors 
                                     className="text-danger"
-                                    model=".yourname"
+                                    model=".author"
                                     show="touched"
                                     messages={{
                                         minLength: 'Must be greater than 2 characters',
@@ -177,8 +180,9 @@ class CommentForm extends Component {
     }
 
     handleSubmmit(values){
-        console.log("Current state is:" + JSON.stringify(values));
-        alert("Current state is:" + JSON.stringify(values));
+        console.log(values);
+        this.toogleModal();
+        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
 }
