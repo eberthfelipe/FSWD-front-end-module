@@ -43,7 +43,7 @@ const DishDetail = (props) => {
                     <div className="row">
                         <RenderDish dish={ props.dish } />
                         <RenderComments comments={props.comments}
-                            addComment={props.addComment}
+                            postComment={props.postComment}
                             dishId={props.dish.id}
                         />
                     </div>
@@ -77,7 +77,7 @@ function RenderDish({ dish }){
     }
 }
 
-function RenderComments({ comments, dishId, addComment }){
+function RenderComments({ comments, dishId, postComment }){
     if(comments != null){
         console.log(comments);
         let allComment = comments.map((commentAux) => {
@@ -102,7 +102,7 @@ function RenderComments({ comments, dishId, addComment }){
             <div className="col-12 col-md-5 m-1">
                 <h4>Comments</h4>
                 {allComment}
-                <CommentForm dishId={dishId} addComment={addComment} />
+                <CommentForm dishId={dishId} postComment={postComment} />
             </div>
         );
     } else {
@@ -206,7 +206,7 @@ class CommentForm extends Component {
     handleSubmmit(values){
         console.log(values);
         this.toogleModal();
-        this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
 }
