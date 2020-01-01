@@ -3,6 +3,7 @@ import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'r
 import { Link } from 'react-router-dom';
 import { baseUrl } from '../shared/baseUrl';
 import { Loading } from './LoadingComponent';
+import { Fade, Stagger } from 'react-animation-components';
 
 function About(props) {
 
@@ -28,7 +29,14 @@ function About(props) {
         );
     } else {
         return(
-            RenderAboutComponent(leaders)
+            <div className="col-12">
+                <Stagger in>
+                    <Media list>
+                        {RenderAboutComponent(leaders)}
+                    </Media>
+                </Stagger>
+            </div>
+            
         );
     }
     
@@ -36,7 +44,7 @@ function About(props) {
 
 function RenderAboutComponent(leaders){
     return (
-<div className="container">
+        <div className="container">
             <div className="row">
                 <Breadcrumb>
                     <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
@@ -89,11 +97,8 @@ function RenderAboutComponent(leaders){
                 <div className="col-12">
                     <h2>Corporate Leadership</h2>
                 </div>
-                <div className="col-12">
-                    <Media list>
-                        {leaders}
-                    </Media>
-                </div>
+                {leaders}
+                
             </div>
         </div>
     );
@@ -106,32 +111,36 @@ function RenderLeader (leader){
         );
     } else if(leader.id === 0){
         return (
-            <div key={leader.id} className="col-12 mt-auto">
-                <Media tag="li">
-                    <Media left middle>
-                        <Media object src={baseUrl + leader.image} alt={leader.name} />
+            <div className="col-12 mt-auto">
+                <Fade in key={leader.id}>
+                    <Media tag="li" key={leader.id}>
+                        <Media left middle>
+                            <Media object src={baseUrl + leader.image} alt={leader.name} />
+                        </Media>
+                        <Media body className="ml-5">
+                            <Media heading>{leader.name}</Media>
+                            <p>{leader.designation}</p>
+                            <p>{leader.description}</p>
+                        </Media>
                     </Media>
-                    <Media body className="ml-5">
-                        <Media heading>{leader.name}</Media>
-                        <p>{leader.designation}</p>
-                        <p>{leader.description}</p>
-                    </Media>
-                </Media>
+                </Fade>
             </div>
         );
     } else {
         return (
-            <div key={leader.id} className="col-12 mt-4">
-                <Media tag="li">
-                    <Media left middle>
-                        <Media object src={baseUrl + leader.image} alt={leader.name} />
+            <div className="col-12 mt-4">
+                <Fade in key={leader.id}>
+                    <Media tag="li" key={leader.id}>
+                        <Media left middle>
+                            <Media object src={baseUrl + leader.image} alt={leader.name} />
+                        </Media>
+                        <Media body className="ml-5">
+                            <Media heading>{leader.name}</Media>
+                            <p>{leader.designation}</p>
+                            {leader.description}
+                        </Media>
                     </Media>
-                    <Media body className="ml-5">
-                        <Media heading>{leader.name}</Media>
-                        <p>{leader.designation}</p>
-                        {leader.description}
-                    </Media>
-                </Media>
+                </Fade>
             </div>
         );
     }

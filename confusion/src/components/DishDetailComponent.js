@@ -95,7 +95,7 @@ function RenderComments({ comments, dishId, postComment }){
             } else {
                 console.log(commentAux.author);
                 return (
-                    <Fade in>
+                    <Fade in key={commentAux.id}>
                         <ul className="list-unstyled">
                             <li key={commentAux.id}>
                                 <p>{commentAux.comment}</p>
