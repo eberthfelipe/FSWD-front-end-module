@@ -1,17 +1,42 @@
 import React from 'react';
 import { Breadcrumb, BreadcrumbItem, Card, CardBody, CardHeader, Media } from 'reactstrap';
 import { Link } from 'react-router-dom';
+import { baseUrl } from '../shared/baseUrl';
+import { Loading } from './LoadingComponent';
 
 function About(props) {
 
-    const leaders = props.leaders.map((leader) => {
+    const leaders = props.leaders.leaders.map((leader) => {
         return (
             RenderLeader(leader)
         );
     });
 
-    return(
-        <div className="container">
+    if(props.leaders.isLoading){
+        const isLoading = () => { return (
+            <Loading />
+        )};
+        return(
+            RenderAboutComponent(isLoading())
+        );
+    } else if(props.leaders.errMess){
+        const errMess = () => { return (
+            <h4>{props.leaders.errMess}</h4>
+        )};
+        return(
+            RenderAboutComponent(errMess())
+        );
+    } else {
+        return(
+            RenderAboutComponent(leaders)
+        );
+    }
+    
+}
+
+function RenderAboutComponent(leaders){
+    return (
+<div className="container">
             <div className="row">
                 <Breadcrumb>
                     <BreadcrumbItem><Link to="/home">Home</Link></BreadcrumbItem>
@@ -20,7 +45,7 @@ function About(props) {
                 <div className="col-12">
                     <h3>About Us</h3>
                     <hr />
-                </div>                
+                </div>
             </div>
             <div className="row row-content">
                 <div className="col-12 col-md-6">
@@ -84,7 +109,7 @@ function RenderLeader (leader){
             <div key={leader.id} className="col-12 mt-auto">
                 <Media tag="li">
                     <Media left middle>
-                        <Media object src={leader.image} alt={leader.name} />
+                        <Media object src={baseUrl + leader.image} alt={leader.name} />
                     </Media>
                     <Media body className="ml-5">
                         <Media heading>{leader.name}</Media>
@@ -99,7 +124,7 @@ function RenderLeader (leader){
             <div key={leader.id} className="col-12 mt-4">
                 <Media tag="li">
                     <Media left middle>
-                        <Media object src={leader.image} alt={leader.name} />
+                        <Media object src={baseUrl + leader.image} alt={leader.name} />
                     </Media>
                     <Media body className="ml-5">
                         <Media heading>{leader.name}</Media>
