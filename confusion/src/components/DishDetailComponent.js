@@ -3,44 +3,52 @@ import { Card, CardImg, CardText, CardBody, CardTitle, Breadcrumb, BreadcrumbIte
             Button, Modal, ModalHeader, ModalBody, Label } from 'reactstrap';
 import { Control, LocalForm, Errors} from 'react-redux-form';
 import { Link } from 'react-router-dom';
+import { Loading } from './LoadingComponent';
+import { baseUrl } from '../shared/baseUrl';
+import { FadeTransform, Fade, Stagger } from 'react-animation-components';
 
 const DishDetail = (props) => {
     console.log('DishDetail comments: ' + props.comments);
-    return (
-        <div>
-            <div className='container'>
+    if(props.isLoading){
+        return (
+            <div className="container">
                 <div className="row">
-                    <Breadcrumb>
-                        <BreadcrumbItem>
-                            <Link to='/menu'>Menu</Link>
-                        </BreadcrumbItem>
-                        <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
-                    </Breadcrumb>
-                    <div className="col-12">
-                        <h3>{props.dish.name}</h3>
-                        <hr />
-                    </div>
-                </div>
-                <div className="row">
-                    <RenderDish dish={ props.dish } />
-                    <RenderComments comments={ props.comments } />
+                    <Loading />
                 </div>
             </div>
-        </div>
-    );
-}
-
-function RenderDish({ dish }){
-    if(dish != null){
+        );
+    } else if(props.errMess){
         return (
-            <div className="col-12 col-md-5 m-1">
-                <Card>
-                    <CardImg src={dish.image} alt={dish.name} />
-                    <CardBody>
-                        <CardTitle> {dish.name} </CardTitle>
-                        <CardText> {dish.description} </CardText>
-                    </CardBody>
-                </Card>
+            <div className="container">
+                <div className="row">
+                    <h4>{props.errMess}</h4>
+                </div>
+            </div>
+        );
+    } else if(props.dish != null){
+        return (
+            <div>
+                <div className='container'>
+                    <div className="row">
+                        <Breadcrumb>
+                            <BreadcrumbItem>
+                                <Link to='/menu'>Menu</Link>
+                            </BreadcrumbItem>
+                            <BreadcrumbItem active>{props.dish.name}</BreadcrumbItem>
+                        </Breadcrumb>
+                        <div className="col-12">
+                            <h3>{props.dish.name}</h3>
+                            <hr />
+                        </div>
+                    </div>
+                    <div className="row">
+                        <RenderDish dish={ props.dish } />
+                        <RenderComments comments={props.comments}
+                            postComment={props.postComment}
+                            dishId={props.dish.id}
+                        />
+                    </div>
+                </div>
             </div>
         );
     } else {
@@ -50,7 +58,32 @@ function RenderDish({ dish }){
     }
 }
 
-function RenderComments({ comments }){
+function RenderDish({ dish }){
+    if(dish != null){
+        return (
+            <div className="col-12 col-md-5 m-1">
+                <FadeTransform in 
+                transformProps ={{
+                    exitTransform: 'scale(0.5) translateY(-50%)'
+                }}>
+                    <Card>
+                        <CardImg src={baseUrl + dish.image} alt={dish.name} />
+                        <CardBody>
+                            <CardTitle> {dish.name} </CardTitle>
+                            <CardText> {dish.description} </CardText>
+                        </CardBody>
+                    </Card>
+                </FadeTransform>
+            </div>
+        );
+    } else {
+        return (
+            <div></div>
+        );
+    }
+}
+
+function RenderComments({ comments, dishId, postComment }){
     if(comments != null){
         console.log(comments);
         let allComment = comments.map((commentAux) => {
@@ -62,20 +95,24 @@ function RenderComments({ comments }){
             } else {
                 console.log(commentAux.author);
                 return (
-                    <div key={commentAux.id} >
+                    <Fade in key={commentAux.id}>
                         <ul className="list-unstyled">
-                            <li>{commentAux.comment}</li>
-                            <li>-- {commentAux.author}, {new Intl.DateTimeFormat('en-US', {year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(commentAux.date)))}</li>
+                            <li key={commentAux.id}>
+                                <p>{commentAux.comment}</p>
+                                <p>-- {commentAux.author} , {new Intl.DateTimeFormat('en-US', { year: 'numeric', month: 'short', day: '2-digit'}).format(new Date(Date.parse(commentAux.date)))}</p>
+                            </li>
                         </ul>
-                    </div>
+                    </Fade>
                 );
             }
         });
         return (
             <div className="col-12 col-md-5 m-1">
                 <h4>Comments</h4>
-                {allComment}
-                <CommentForm />
+                <Stagger in>
+                    {allComment}
+                </Stagger>
+                <CommentForm dishId={dishId} postComment={postComment} />
             </div>
         );
     } else {
@@ -127,8 +164,8 @@ class CommentForm extends Component {
                                 </Control.select>
                             </div>
                             <div className="form-group">
-                                <Label htmlFor="yourname">Your Name</Label>
-                                <Control.text model=".yourname" id="yourname" name="yourname"
+                                <Label htmlFor="author">Your Name</Label>
+                                <Control.text model=".author" id="author" name="author"
                                     placeholder="Your Name"
                                     className="form-control"
                                     validators={{
@@ -138,7 +175,7 @@ class CommentForm extends Component {
                                 />
                                 <Errors 
                                     className="text-danger"
-                                    model=".yourname"
+                                    model=".author"
                                     show="touched"
                                     messages={{
                                         minLength: 'Must be greater than 2 characters',
@@ -177,8 +214,9 @@ class CommentForm extends Component {
     }
 
     handleSubmmit(values){
-        console.log("Current state is:" + JSON.stringify(values));
-        alert("Current state is:" + JSON.stringify(values));
+        console.log(values);
+        this.toogleModal();
+        this.props.postComment(this.props.dishId, values.rating, values.author, values.comment);
     }
 
 }
